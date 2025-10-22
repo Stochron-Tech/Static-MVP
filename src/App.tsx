@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card } from './components/ui/card';
-import { Activity, TrendingUp, Shield, Map, FileText, Calendar, Radio, Zap, Menu, BarChart3, BookOpen } from 'lucide-react';
+import { Activity, TrendingUp, Shield, Map, FileText, Calendar, Radio, Zap, Menu, BarChart3, BookOpen, Moon, Sun } from 'lucide-react';
 import { Button } from './components/ui/button';
 import ModelIntroduction from './components/ModelIntroduction';
 import ForecastingEngine from './components/ForecastingEngine';
@@ -27,6 +27,20 @@ const modules = [
 export default function App() {
   const [activeModule, setActiveModule] = useState('introduction');
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  useEffect(() => {
+    // Apply dark mode class to document root
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
   const renderModule = () => {
     switch (activeModule) {
@@ -44,9 +58,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-background dark">
+    <div className="min-h-screen bg-background">
       {/* Professional Header */}
-      <header className="border-b border-border bg-card sticky top-0 z-50 shadow-lg">
+      <header className="border-b border-border bg-card sticky top-0 z-50 shadow-lg backdrop-blur-sm bg-card/95">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -80,6 +94,19 @@ export default function App() {
                   day: 'numeric' 
                 })}
               </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleDarkMode}
+                className="rounded-full"
+                aria-label="Toggle dark mode"
+              >
+                {isDarkMode ? (
+                  <Sun className="w-5 h-5 text-yellow-500" />
+                ) : (
+                  <Moon className="w-5 h-5 text-slate-700" />
+                )}
+              </Button>
             </div>
           </div>
         </div>
