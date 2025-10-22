@@ -28,7 +28,7 @@ const forecastData = [
 ];
 
 const calculatePotentialShare = (brazilForecast: number, totalMarket: number) => {
-  const usCurrentShare = 24.1;
+  // Baseline US share for reference: 24.1 MMT
   const potentialGain = Math.max(0, totalMarket - brazilForecast - 10 - 13); // subtract Argentina and others baseline
   return potentialGain;
 };

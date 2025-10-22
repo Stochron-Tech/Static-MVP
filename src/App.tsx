@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Card } from './components/ui/card';
 import { Activity, TrendingUp, Shield, Map, FileText, Calendar, Radio, Zap, Menu, BarChart3, BookOpen, Moon, Sun } from 'lucide-react';
 import { Button } from './components/ui/button';
 import ModelIntroduction from './components/ModelIntroduction';

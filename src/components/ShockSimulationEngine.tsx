@@ -4,13 +4,11 @@ import { Badge } from './ui/badge';
 import { Button } from './ui/button';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { ChevronRight, ChevronDown, Trash2, Settings, FileText, Plus, TrendingUp, Link } from 'lucide-react';
+import { ChevronRight, ChevronDown, Trash2, Settings, FileText, Plus, Link } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from './ui/dialog';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-import { Slider } from './ui/slider';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Textarea } from './ui/textarea';
 
 interface VariableBlock {

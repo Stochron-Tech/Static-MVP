@@ -10,7 +10,10 @@ export {
   ArrowLeft,
   ArrowRight,
   ChevronLeft,
+  ChevronLeft as ChevronLeftIcon,
   ChevronRight,
   ChevronDown as ChevronDownIcon,
+  ChevronUp as ChevronUpIcon,
   MoreHorizontal,
+  MoreHorizontal as MoreHorizontalIcon,
 } from 'lucide-react';

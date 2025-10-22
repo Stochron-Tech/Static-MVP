@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Card } from './ui/card';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, Area, ComposedChart } from 'recharts';
+import { Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, ComposedChart } from 'recharts';
 import { Badge } from './ui/badge';
 import { Info, ChevronDown, ChevronUp } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
@@ -36,7 +36,7 @@ const forecastData = [
   { year: 2027, actual: null, arima: 32.8, sarima: 31.9, garch: 29.8, label: 'Forecast' },
 ];
 
-const periodInsights = {
+const periodInsights: Record<string, string> = {
   'WTO Entry': 'China joined the WTO in December 2001, opening agricultural markets. US soybean exports surged as China rapidly industrialized and expanded livestock production. Tariff reductions and quota expansions facilitated market access.',
   'Trade Growth': 'Sustained expansion driven by Chinese demand for animal feed and cooking oil. US captured dominant market position (60-70% share) during this golden period of bilateral agricultural trade.',
   'Financial Crisis': 'Global recession temporarily disrupted commodity flows. Chinese stimulus programs eventually sustained import demand, but volatility increased significantly.',
