@@ -9,6 +9,8 @@ import { Textarea } from './ui/textarea';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 
+const randomMetric = () => Number((Math.random() * 0.6 + 0.2).toFixed(2));
+
 // Custom node component with regime color and weight input
 function SourceNode({ data }: any) {
   const regimeColor = data.regime < 0.25 ? 'from-green-500 to-green-600' :
@@ -23,7 +25,8 @@ function SourceNode({ data }: any) {
         <div className="font-semibold text-sm mb-1">{data.label}</div>
         {data.showMetrics && (
           <div className="text-xs space-y-0.5 opacity-90">
-            <div>PFI: {data.pfi?.toFixed(2) || '0.00'}</div>
+            <div>FI: {data.fi?.toFixed(2) || '0.00'}</div>
+            <div>TFI: {data.tfi?.toFixed(2) || '0.00'}</div>
             <div>Regime: {data.regimeLabel || 'Stable'}</div>
           </div>
         )}
@@ -90,12 +93,13 @@ function AggregationNode({ data }: any) {
   return (
     <div className={`relative px-8 py-6 bg-gradient-to-br ${regimeColor} rounded-xl shadow-2xl min-w-[250px]`}>
       <Handle type="target" position={Position.Left} className="!bg-cyan-400 !w-3 !h-3" />
+      <Handle type="source" position={Position.Right} className="!bg-cyan-400 !w-3 !h-3" />
       <div className="text-white text-center">
         <TrendingUp className="size-8 mx-auto mb-2" />
         <div className="font-bold text-lg mb-2">{data.label}</div>
         <div className="space-y-1 text-sm">
-          <div>PFI: {data.pfi?.toFixed(2) || '0.00'}</div>
-          <div>PTFI: {data.ptfi?.toFixed(2) || '0.00'}</div>
+          <div>FI: {data.fi?.toFixed(2) || '0.00'}</div>
+          <div>TFI: {data.tfi?.toFixed(2) || '0.00'}</div>
           <div className="font-semibold">{data.regimeLabel || 'Stable'}</div>
         </div>
       </div>
@@ -140,11 +144,11 @@ export function NetworkGraph() {
     {
       id: 'final',
       type: 'aggregation',
-      position: { x: 1200, y: 300 },
+      position: { x: 200, y: 300 },
       data: {
         label: 'Final Aggregated Results',
-        pfi: 0.42,
-        ptfi: 0.38,
+        fi: 0.42,
+        tfi: 0.38,
         regime: 0.42,
         regimeLabel: 'Watch',
       },
@@ -156,7 +160,8 @@ export function NetworkGraph() {
       position: { x: 700, y: 100 },
       data: {
         label: 'Earnings Calls',
-        pfi: 0.35,
+        fi: 0.35,
+        tfi: randomMetric(),
         regime: 0.35,
         regimeLabel: 'Watch',
         weight: 0.4,
@@ -170,7 +175,8 @@ export function NetworkGraph() {
       position: { x: 700, y: 250 },
       data: {
         label: 'Company Filings',
-        pfi: 0.28,
+        fi: 0.28,
+        tfi: randomMetric(),
         regime: 0.28,
         regimeLabel: 'Watch',
         weight: 0.2,
@@ -184,7 +190,8 @@ export function NetworkGraph() {
       position: { x: 700, y: 400 },
       data: {
         label: 'Regulatory Announcements',
-        pfi: 0.52,
+        fi: 0.52,
+        tfi: randomMetric(),
         regime: 0.52,
         regimeLabel: 'Alert',
         weight: 0.2,
@@ -198,7 +205,8 @@ export function NetworkGraph() {
       position: { x: 700, y: 550 },
       data: {
         label: 'News Articles',
-        pfi: 0.45,
+        fi: 0.45,
+        tfi: randomMetric(),
         regime: 0.45,
         regimeLabel: 'Watch',
         weight: 0.2,
@@ -220,10 +228,10 @@ export function NetworkGraph() {
   ];
 
   const initialEdges: Edge[] = [
-    { id: 'e-earnings-final', source: 'earnings', target: 'final', animated: true, style: { stroke: '#22d3ee' } },
-    { id: 'e-filings-final', source: 'filings', target: 'final', animated: true, style: { stroke: '#22d3ee' } },
-    { id: 'e-regulatory-final', source: 'regulatory', target: 'final', animated: true, style: { stroke: '#22d3ee' } },
-    { id: 'e-news-final', source: 'news', target: 'final', animated: true, style: { stroke: '#22d3ee' } },
+    { id: 'e-final-earnings', source: 'final', target: 'earnings', animated: true, style: { stroke: '#22d3ee' } },
+    { id: 'e-final-filings', source: 'final', target: 'filings', animated: true, style: { stroke: '#22d3ee' } },
+    { id: 'e-final-regulatory', source: 'final', target: 'regulatory', animated: true, style: { stroke: '#22d3ee' } },
+    { id: 'e-final-news', source: 'final', target: 'news', animated: true, style: { stroke: '#22d3ee' } },
   ];
 
   const [nodes, _setNodes, onNodesChange] = useNodesState(initialNodes);
