@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { ReactFlow, Node, Edge, Controls, Background, useNodesState, useEdgesState, Handle, Position } from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 import '../../styles/react-flow.css';
 import { Plus, Upload, FileText, TrendingUp } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
