@@ -1,35 +1,35 @@
-import { useState } from 'react';
-import { PlatformOverview } from './components/PlatformOverview';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import PlatformOverview from './components/PlatformOverview';
 import { InteractivePage } from './components/InteractivePage';
-import { FinalAnalysis } from './components/FinalAnalysis';
-
-type Page = 'overview' | 'interactive' | 'analysis';
+// FIX BELOW: Removed curly braces because it is a default export
+import FinalAnalysis from './components/FinalAnalysis'; 
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<Page>('overview');
-  const [selectedStock] = useState('SUNPHARMA');
-
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'overview':
-        return <PlatformOverview onGetStarted={() => setCurrentPage('interactive')} />;
-      case 'interactive':
-        return <InteractivePage onGoToAnalysis={() => setCurrentPage('analysis')} />;
-      case 'analysis':
-        return (
-          <FinalAnalysis
-            stockSymbol={selectedStock}
-            onBack={() => setCurrentPage('interactive')}
-          />
-        );
-      default:
-        return <PlatformOverview onGetStarted={() => setCurrentPage('interactive')} />;
-    }
-  };
+  const navigate = useNavigate();
 
   return (
     <div className="dark">
-      {renderPage()}
+      <Routes>
+        <Route path="/" element={<PlatformOverview />} />
+        <Route 
+          path="/interactive" 
+          element={
+            <InteractivePage 
+              onGoToAnalysis={() => navigate('/analysis')} 
+            />
+          } 
+        />
+        <Route 
+          path="/analysis" 
+          element={
+            <FinalAnalysis 
+            // Note: We don't need stockSymbol/onBack if the component doesn't use them, 
+            // but keeping them doesn't hurt.
+            />
+          } 
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </div>
   );
 }

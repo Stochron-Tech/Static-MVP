@@ -1,280 +1,215 @@
-import React from 'react';
-import { motion } from 'motion/react';
-import { ArrowRight, FileText, TrendingUp, Brain, CheckCircle2, ChevronDown } from 'lucide-react';
-import { Button } from './ui/button';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
+import { useNavigate } from 'react-router-dom';
+import { FileText, TrendingUp, AlertCircle, ArrowRight } from 'lucide-react';
+import { Button } from '@/app/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/app/components/ui/card';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/app/components/ui/accordion';
 
-interface PlatformOverviewProps {
-  onGetStarted: () => void;
-}
-
-export function PlatformOverview({ onGetStarted }: PlatformOverviewProps) {
-  const [openFaq, setOpenFaq] = React.useState<string | null>('statistical');
-
-  const faqs = [
-    {
-      id: 'statistical',
-      question: 'What is the statistical robustness of this model?',
-      answer: (
-        <div className="space-y-3">
-          <p>
-            The Pharma Foreboding Index is inspired by rigorous academic research on uncertainty
-            measurement and text-based financial analysis:
-          </p>
-          <ol className="list-decimal list-inside space-y-2 ml-4">
-            <li className="text-gray-300">
-              <strong>Baker, S. R., Bloom, N., & Davis, S. J. (2016).</strong> "Measuring economic
-              policy uncertainty." <em>The Quarterly Journal of Economics, 131(3), 1593-1636.</em>
-            </li>
-            <li className="text-gray-300">
-              <strong>Roy Trivedi, S. (2024).</strong> "Into the Unknown: Uncertainty, Foreboding
-              and Financial Markets." <em>Asia-Pacific Financial Markets 31, 1–23.</em>
-            </li>
-          </ol>
-          <p className="mt-4 text-cyan-400">
-            <strong>Dr. Smita Roy Trivedi</strong> (Senior Researcher at the National Institute of
-            Bank Management) is closely guiding us and evaluating our model for its statistical
-            efficacy.
-          </p>
-        </div>
-      ),
-    },
-    {
-      id: 'how-it-works',
-      question: 'How does the PFI calculation work?',
-      answer: (
-        <div className="space-y-2">
-          <p>
-            The Pharma Foreboding Index (PFI) is calculated by analyzing text from multiple sources
-            using custom dictionaries:
-          </p>
-          <ul className="list-disc list-inside space-y-1 ml-4 text-gray-300">
-            <li>Each document is scored based on foreboding vs. assurance word frequencies</li>
-            <li>Documents within a category are weighted and aggregated</li>
-            <li>Category scores are combined using adjustable weights</li>
-            <li>The final PFI value ranges from 0 (stable) to 1 (critical)</li>
-          </ul>
-        </div>
-      ),
-    },
-    {
-      id: 'workflow',
-      question: 'What is the traditional workflow vs. PFI workflow?',
-      answer: (
-        <div className="space-y-2">
-          <p>
-            <strong className="text-cyan-400">Traditional Workflow:</strong> Risk managers read
-            hundreds of documents → manually synthesize information → arrive at final analysis
-          </p>
-          <p className="mt-3">
-            <strong className="text-cyan-400">PFI Workflow:</strong> Start with aggregated analysis
-            → drill down into specific categories → investigate relevant documents only
-          </p>
-          <p className="mt-3 text-green-400">
-            This inverts the research process, saving time and reducing information overload.
-          </p>
-        </div>
-      ),
-    },
-    {
-      id: 'dictionaries',
-      question: 'Can I customize the analysis dictionaries?',
-      answer: (
-        <p>
-          Yes! The platform provides four customizable dictionaries: Root Foreboding, Foreboding,
-          Assurance, and Geopolitical. You can add or remove words to tailor the analysis to your
-          specific research needs.
-        </p>
-      ),
-    },
-  ];
+export default function PlatformOverview() {
+  const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-gray-100">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-500/10" />
-        <div className="relative max-w-7xl mx-auto px-6 py-24">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center space-y-6"
-          >
-            <h1 className="text-6xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-              Re-engineering Risk Analysis
-            </h1>
-            <p className="text-2xl text-gray-300 max-w-3xl mx-auto">
-              This system transforms the workflow of Risk Managers and Portfolio Managers
-            </p>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Workflow Comparison */}
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid md:grid-cols-2 gap-12 items-start">
-          {/* Traditional Workflow */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="space-y-6"
-          >
-            <h3 className="text-2xl font-bold text-red-400 mb-6">Traditional Workflow</h3>
-            <div className="relative">
-              {/* Chaotic Documents */}
-              <div className="space-y-4 p-6 bg-gray-900/50 border border-red-500/30 rounded-lg">
-                {[
-                  { icon: FileText, label: 'Earnings Call', color: 'text-red-400' },
-                  { icon: FileText, label: 'News Article', color: 'text-orange-400' },
-                  { icon: FileText, label: 'Company Filing', color: 'text-yellow-400' },
-                  { icon: FileText, label: 'Regulatory Doc', color: 'text-pink-400' },
-                  { icon: FileText, label: 'More Docs...', color: 'text-purple-400' },
-                ].map((doc, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3 + idx * 0.1 }}
-                    className={`flex items-center gap-3 ${doc.color}`}
-                  >
-                    <doc.icon className="size-5" />
-                    <span className="text-sm">{doc.label}</span>
-                  </motion.div>
-                ))}
-              </div>
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.8 }}
-                className="absolute -right-4 top-1/2 -translate-y-1/2"
-              >
-                <ArrowRight className="size-8 text-red-400" />
-              </motion.div>
-            </div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
-              className="p-6 bg-red-900/20 border border-red-500/30 rounded-lg text-center"
-            >
-              <Brain className="size-12 text-red-400 mx-auto mb-3" />
-              <p className="text-sm text-gray-300">Manual Synthesis</p>
-              <p className="text-xs text-gray-500 mt-1">Hours of reading & analysis</p>
-            </motion.div>
-          </motion.div>
-
-          {/* PFI Workflow */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="space-y-6"
-          >
-            <h3 className="text-2xl font-bold text-green-400 mb-6">PFI Workflow</h3>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4 }}
-              className="p-6 bg-green-900/20 border border-green-500/30 rounded-lg text-center"
-            >
-              <TrendingUp className="size-12 text-green-400 mx-auto mb-3" />
-              <p className="font-bold text-xl text-green-400">Start Here</p>
-              <p className="text-sm text-gray-300 mt-2">Aggregated PFI Score</p>
-            </motion.div>
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.6 }}
-              className="text-center"
-            >
-              <ArrowRight className="size-8 text-green-400 mx-auto rotate-90" />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-              className="p-6 bg-cyan-900/20 border border-cyan-500/30 rounded-lg"
-            >
-              <p className="text-sm text-center text-gray-300">Drill down only where needed</p>
-              <div className="grid grid-cols-2 gap-2 mt-4">
-                {['Category A', 'Category B', 'Category C', 'Category D'].map((cat, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 1 + idx * 0.1 }}
-                    className="text-xs p-2 bg-cyan-500/10 rounded text-center"
-                  >
-                    {cat}
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </motion.div>
+    <div className="min-h-screen bg-slate-950 text-slate-200 p-8">
+      <div className="max-w-6xl mx-auto space-y-12">
+        {/* Header */}
+        <div className="text-center space-y-4">
+          <h1 className="text-5xl font-bold text-white">
+            Volatility Foreboding Index Platform
+          </h1>
+          <p className="text-xl text-slate-400">
+            Predictive Analytics for Pharma Stock Volatility
+          </p>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.4 }}
-          className="mt-12 text-center"
-        >
-          <Button
-            onClick={onGetStarted}
-            size="lg"
-            className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white"
-          >
-            Get Started
-            <ArrowRight className="ml-2 size-5" />
-          </Button>
-        </motion.div>
-      </div>
-
-      {/* FAQ Section */}
-      <div className="max-w-4xl mx-auto px-6 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-          Frequently Asked Questions
-        </h2>
-        <div className="space-y-4">
-          {faqs.map((faq) => (
-            <Collapsible
-              key={faq.id}
-              open={openFaq === faq.id}
-              onOpenChange={(open) => setOpenFaq(open ? faq.id : null)}
-            >
-              <div className="border border-cyan-500/30 rounded-lg overflow-hidden bg-gray-900/50">
-                <CollapsibleTrigger className="w-full">
-                  <div className="flex items-center justify-between p-6 hover:bg-cyan-500/5 transition-colors">
-                    <h3 className="text-lg font-semibold text-left">{faq.question}</h3>
-                    <ChevronDown
-                      className={`size-5 text-cyan-400 transition-transform ${
-                        openFaq === faq.id ? 'rotate-180' : ''
-                      }`}
-                    />
+        {/* Main Claim Section */}
+        <Card className="border-2 border-slate-800 bg-slate-900/50">
+          <CardHeader className="text-center">
+            <CardTitle className="text-3xl text-white">
+              Re-engineering the Workflow of Risk & Portfolio Managers
+            </CardTitle>
+            <CardDescription className="text-lg mt-4 text-slate-400">
+              Traditional approach vs. Our revolutionary approach
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-8">
+            {/* Old Way */}
+            <div className="bg-red-950/20 p-6 rounded-lg border-2 border-red-900/50">
+              <h3 className="text-xl font-semibold mb-4 text-red-200 flex items-center gap-2">
+                <AlertCircle className="w-6 h-6 text-red-400" />
+                Traditional Approach: Messy & Time-Consuming
+              </h3>
+              <div className="relative">
+                <div className="flex flex-wrap gap-4 justify-center items-center">
+                  <DocumentIcon label="Earnings Call" />
+                  <ArrowRight className="w-6 h-6 text-red-700/50" />
+                  <DocumentIcon label="News" />
+                  <ArrowRight className="w-6 h-6 text-red-700/50" />
+                  <DocumentIcon label="Filings" />
+                  <ArrowRight className="w-6 h-6 text-red-700/50" />
+                  <DocumentIcon label="Reports" />
+                  <ArrowRight className="w-6 h-6 text-red-700/50" />
+                  <div className="px-6 py-4 bg-red-900/40 border border-red-800 rounded-lg font-semibold text-red-200">
+                    Final Analysis?
                   </div>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <div className="px-6 pb-6 text-gray-300">{faq.answer}</div>
-                </CollapsibleContent>
+                </div>
+                <p className="text-center mt-4 text-red-400/80 italic">
+                  Hours of reading → Uncertain conclusions
+                </p>
               </div>
-            </Collapsible>
-          ))}
-        </div>
-      </div>
+            </div>
 
-      {/* Footer */}
-      <div className="border-t border-cyan-500/20 bg-gray-900/30 backdrop-blur-sm mt-12">
-        <div className="max-w-7xl mx-auto px-6 py-8">
-          <div className="flex items-center justify-center gap-2 text-sm text-gray-400">
-            <CheckCircle2 className="size-4 text-green-400" />
-            <span>Academically validated approach</span>
-            <span className="mx-2">•</span>
-            <span>Expert supervision by Dr. Smita Roy Trivedi</span>
-          </div>
-        </div>
+            {/* New Way */}
+            <div className="bg-green-950/20 p-6 rounded-lg border-2 border-green-900/50">
+              <h3 className="text-xl font-semibold mb-4 text-green-200 flex items-center gap-2">
+                <TrendingUp className="w-6 h-6 text-green-400" />
+                Our Approach: Start with Analysis, Dive Deep as Needed
+              </h3>
+              <div className="flex flex-col items-center gap-4">
+                <div className="px-8 py-6 bg-green-700 text-white rounded-lg font-semibold text-xl shadow-lg shadow-green-900/20">
+                  Final Analysis (FI, TFI, Regime)
+                </div>
+                <ArrowRight className="w-6 h-6 text-green-500 rotate-90" />
+                <div className="flex flex-wrap gap-4 justify-center">
+                  <DocumentIcon label="Drill into Earnings" small />
+                  <DocumentIcon label="Check News" small />
+                  <DocumentIcon label="Review Filings" small />
+                  <DocumentIcon label="Validate Sources" small />
+                </div>
+                <p className="text-center mt-4 text-green-400 font-semibold">
+                  Immediate insights → Deep dive only where needed
+                </p>
+              </div>
+            </div>
+
+            <div className="text-center pt-4">
+              <Button 
+                size="lg" 
+                onClick={() => navigate('/interactive')}
+                className="text-lg px-8 py-6 bg-blue-600 hover:bg-blue-500 text-white"
+              >
+                Start Analysis
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* FAQs */}
+        <Card className="bg-slate-900 border-slate-800">
+          <CardHeader>
+            <CardTitle className="text-2xl text-white">Frequently Asked Questions</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="item-1" className="border-slate-800">
+                <AccordionTrigger className="text-lg font-semibold text-slate-200 hover:text-white">
+                  What is the statistical robustness of this model?
+                </AccordionTrigger>
+                <AccordionContent className="text-base space-y-4 text-slate-400">
+                  <p>
+                    Our methodology is inspired by rigorous academic research in economic uncertainty measurement:
+                  </p>
+                  <ul className="list-disc list-inside space-y-2 ml-4">
+                    <li>
+                      <strong>Baker, S. R., Bloom, N., & Davis, S. J. (2016).</strong> Measuring economic policy uncertainty. 
+                      <em> The Quarterly Journal of Economics, 131(3), 1593-1636.</em>
+                    </li>
+                    <li>
+                      <strong>Roy Trivedi, S. (2024).</strong> Into the Unknown: Uncertainty, Foreboding and Financial Markets. 
+                      <em> Asia-Pacific Financial Markets 31, 1–23.</em>
+                    </li>
+                  </ul>
+                  <p className="mt-4 bg-blue-950/30 p-4 rounded border-l-4 border-blue-500 text-slate-300">
+                    <strong className="text-blue-400">Academic Validation:</strong> Dr. Smita Roy Trivedi (Senior Researcher at the National Institute of Bank Management) 
+                    is closely guiding our research team and evaluating our model for its statistical efficacy and robustness.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-2" className="border-slate-800">
+                <AccordionTrigger className="text-lg font-semibold text-slate-200 hover:text-white">
+                  What are the Foreboding Index (FI) and Term Frequency Foreboding Index (TFI)?
+                </AccordionTrigger>
+                <AccordionContent className="text-base text-slate-400">
+                  <p className="mb-2">
+                    The <strong className="text-slate-200">Foreboding Index (FI)</strong> measures the presence of foreboding language in text documents. 
+                    It quantifies uncertainty and negative sentiment that may precede volatility.
+                  </p>
+                  <p>
+                    The <strong className="text-slate-200">Term Frequency Foreboding Index (TFI)</strong> weights the FI by the frequency of foreboding terms, 
+                    providing a more nuanced measure that accounts for how often concerning language appears.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-3" className="border-slate-800">
+                <AccordionTrigger className="text-lg font-semibold text-slate-200 hover:text-white">
+                  How are Regime levels determined?
+                </AccordionTrigger>
+                <AccordionContent className="text-base text-slate-400">
+                  <p className="mb-4">
+                    Regime levels categorize the current market state based on the FI score:
+                  </p>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-3">
+                      <span className="w-24 px-3 py-1 bg-green-950/40 text-green-400 border border-green-900 rounded font-semibold">0.0 - 0.25</span>
+                      <span>Stable: Low volatility expected</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="w-24 px-3 py-1 bg-yellow-950/40 text-yellow-400 border border-yellow-900 rounded font-semibold">0.25 - 0.5</span>
+                      <span>Watch: Moderate concern, monitor closely</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="w-24 px-3 py-1 bg-orange-950/40 text-orange-400 border border-orange-900 rounded font-semibold">0.5 - 0.75</span>
+                      <span>Alert: Elevated risk, prepare for volatility</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="w-24 px-3 py-1 bg-red-950/40 text-red-400 border border-red-900 rounded font-semibold">0.75 - 1.0</span>
+                      <span>Critical: High volatility imminent</span>
+                    </div>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-4" className="border-slate-800">
+                <AccordionTrigger className="text-lg font-semibold text-slate-200 hover:text-white">
+                  Which sectors and stocks are supported?
+                </AccordionTrigger>
+                <AccordionContent className="text-base text-slate-400">
+                  <p>
+                    Our platform currently focuses on the pharmaceutical sector within the Indian stock market, 
+                    covering major companies across various sub-sectors including generic drugs, specialty pharma, 
+                    biotech, and diagnostics. You can select from sector-categorized companies in the analysis interface.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-5" className="border-slate-800">
+                <AccordionTrigger className="text-lg font-semibold text-slate-200 hover:text-white">
+                  Can I customize the foreboding dictionaries?
+                </AccordionTrigger>
+                <AccordionContent className="text-base text-slate-400">
+                  <p>
+                    Yes! Our platform allows you to fully customize the dictionaries used for analysis. 
+                    You can add or remove words from the Root Foreboding, Foreboding, Assurance, and Geopolitical dictionaries 
+                    to tailor the analysis to your specific needs and domain expertise.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </CardContent>
+        </Card>
       </div>
+    </div>
+  );
+}
+
+function DocumentIcon({ label, small }: { label: string; small?: boolean }) {
+  return (
+    <div className={`flex flex-col items-center gap-1 ${small ? 'scale-75' : ''}`}>
+      <div className="p-3 bg-slate-800 rounded-lg shadow-md border border-slate-700">
+        <FileText className="w-8 h-8 text-blue-400" />
+      </div>
+      <span className="text-xs text-slate-400 font-medium">{label}</span>
     </div>
   );
 }

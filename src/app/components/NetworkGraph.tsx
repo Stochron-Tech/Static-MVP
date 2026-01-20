@@ -1,13 +1,12 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { ReactFlow, Node, Edge, Controls, Background, useNodesState, useEdgesState, Handle, Position } from '@xyflow/react';
-import '@xyflow/react/dist/style.css';
+import '../../styles/react-flow.css';
 import { Plus, Upload, FileText, TrendingUp } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-
 
 // Custom node component with regime color and weight input
 function SourceNode({ data }: any) {
@@ -64,7 +63,11 @@ function SourceNode({ data }: any) {
 function AddNode({ data }: any) {
   return (
     <div
-      onClick={data.onClick}
+      onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        data.onClick?.();
+      }}
       className="px-4 py-4 bg-gray-800 border-2 border-dashed border-cyan-500 rounded-lg cursor-pointer hover:bg-cyan-900/30 transition-colors min-w-[150px]"
     >
       <Handle type="target" position={Position.Left} className="!bg-cyan-400" />
@@ -107,8 +110,28 @@ const nodeTypes = {
 
 export function NetworkGraph() {
   const [showDialog, setShowDialog] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [documentText, setDocumentText] = useState('');
   const [documentName, setDocumentName] = useState('');
+
+  const handleAddCategoryClick = useCallback(() => {
+    setSelectedCategory('custom');
+    setShowDialog(true);
+  }, []);
+
+  const handleNodeClick = useCallback(
+    (_: React.MouseEvent, node: Node) => {
+      if (node.type === 'add') {
+        handleAddCategoryClick();
+        return;
+      }
+
+      const label = typeof node.data?.label === 'string' ? node.data.label : node.id;
+      setSelectedCategory(label);
+      setShowDialog(true);
+    },
+    [handleAddCategoryClick]
+  );
 
   // Initial nodes setup
   const initialNodes: Node[] = [
@@ -186,9 +209,11 @@ export function NetworkGraph() {
       id: 'add-category',
       type: 'add',
       position: { x: 700, y: 700 },
+      draggable: false,
+      selectable: false,
       data: {
         label: 'Add Category',
-        onClick: () => console.log('Add category'),
+        onClick: handleAddCategoryClick,
       },
     },
   ];
@@ -200,8 +225,8 @@ export function NetworkGraph() {
     { id: 'e-news-final', source: 'news', target: 'final', animated: true, style: { stroke: '#22d3ee' } },
   ];
 
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, _setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, _setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   const handleAddDocument = () => {
     if (!documentName || !documentText) return;
@@ -219,6 +244,7 @@ export function NetworkGraph() {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onNodeClick={handleNodeClick}
         nodeTypes={nodeTypes}
         fitView
         className="bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950"
@@ -231,7 +257,9 @@ export function NetworkGraph() {
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
         <DialogContent className="bg-gray-900 border-cyan-500/30 text-white">
           <DialogHeader>
-            <DialogTitle className="text-cyan-400">Add New Document</DialogTitle>
+            <DialogTitle className="text-cyan-400">
+              {selectedCategory ? `Add New Document • ${selectedCategory}` : 'Add New Document'}
+            </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>
