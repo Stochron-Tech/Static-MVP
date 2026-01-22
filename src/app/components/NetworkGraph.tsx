@@ -9,7 +9,16 @@ import { Textarea } from './ui/textarea';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 
+interface NetworkGraphProps {
+  selectedStock?: Stock | null;
+}
+
 const randomMetric = () => Number((Math.random() * 0.6 + 0.2).toFixed(2));
+
+interface Stock {
+  symbol: string;
+  name: string;
+}
 
 const getChildIds = (edges: Edge[], parentId: string) => {
   // This graph uses two edge directions:
@@ -211,7 +220,10 @@ function AggregationNode({ data }: any) {
       <Handle type="source" position={Position.Right} className="!bg-cyan-400 !w-3 !h-3" />
       <div className="text-white text-center">
         <TrendingUp className="size-8 mx-auto mb-2" />
-        <div className="font-bold text-lg mb-2">{data.label}</div>
+        <div className="font-bold text-lg mb-1">{data.label}</div>
+        {data.companyName && (
+          <div className="text-sm text-white/90 mb-2">{data.companyName}</div>
+        )}
         <div className="space-y-1 text-sm">
           <div>FI: {data.fi?.toFixed(2) || '0.00'}</div>
           <div>TFI: {data.tfi?.toFixed(2) || '0.00'}</div>
@@ -228,7 +240,7 @@ const nodeTypes = {
   aggregation: AggregationNode,
 };
 
-export function NetworkGraph() {
+export function NetworkGraph({ selectedStock }: NetworkGraphProps) {
   const [showDialog, setShowDialog] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
@@ -301,6 +313,7 @@ export function NetworkGraph() {
         position: { x: 200, y: 300 },
         data: {
           label: 'Final Aggregated Results',
+          companyName: selectedStock?.name,
           fi: 0.42,
           tfi: 0.38,
           regime: 0.42,
@@ -471,7 +484,7 @@ export function NetworkGraph() {
 
     setNodes(initialNodes);
     setEdges(initialEdges);
-  }, []);
+  }, [selectedStock]);
 
   // Handler to update weight when the circle input is changed
   const handleWeightChangeExec = (id: string, value: number) => {

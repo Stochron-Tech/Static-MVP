@@ -15,7 +15,10 @@ export default function App() {
           path="/interactive" 
           element={
             <InteractivePage 
-              onGoToAnalysis={() => navigate('/analysis')} 
+              onGoToAnalysis={() => {
+                console.log('Navigating to /analysis');
+                navigate('/analysis');
+              }} 
             />
           } 
         />

@@ -15,6 +15,7 @@ interface InteractivePageProps {
 }
 
 export function InteractivePage({ onGoToAnalysis }: InteractivePageProps) {
+
   const [selectedStock, setSelectedStock] = useState<Stock | null>({
     symbol: 'SUNPHARMA',
     name: 'Sun Pharmaceutical',
@@ -58,7 +59,7 @@ export function InteractivePage({ onGoToAnalysis }: InteractivePageProps) {
 
         {/* Center - Network Graph */}
         <div className="flex-1 relative z-0">
-          <NetworkGraph />
+          <NetworkGraph selectedStock={selectedStock} />
         </div>
 
         {/* Right Sidebar - Dictionary Editor */}
@@ -120,7 +121,11 @@ export function InteractivePage({ onGoToAnalysis }: InteractivePageProps) {
             </Button>
 
             <Button
-              onClick={onGoToAnalysis}
+              onClick={() => {
+                console.log('GO TO FINAL ANALYSIS clicked');
+                onGoToAnalysis();
+                window.location.reload(); // Force reload so route change is reflected
+              }}
               className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500"
             >
               <BarChart3 className="size-4 mr-2" />
